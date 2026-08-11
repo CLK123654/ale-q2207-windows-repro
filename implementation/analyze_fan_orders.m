@@ -4,13 +4,7 @@ arguments
     outputRoot (1,1) string
 end
 
-if isfolder(outputRoot) && ~isempty(dir(outputRoot))
-    error('ALE:OutputNotEmpty', '输出目录必须为空');
-end
-if isfolder(outputRoot)
-    rmdir(outputRoot, 's');
-end
-mkdir(outputRoot);
+prepareOutput(outputRoot);
 completionMarker = fullfile(outputRoot, '.complete');
 cleanup = onCleanup(@() cleanupOnFailure(outputRoot, completionMarker));
 
@@ -247,7 +241,7 @@ lines = [
     "results/next_test_program.csv供现场人员设置升速率、驻留转速和驻留时间。"
     "figures/order_trends.png用于评审会查看两次试验趋势、报警限值和风险边界。"
     ""
-    "在MATLAB R2024b中把src加入路径，调用analyze_fan_orders并传入输入目录与空输出目录。程序不修改输入文件，输出目录必须为空。"
+    "在MATLAB R2024b中把src加入路径，调用analyze_fan_orders并传入输入目录与指定交付目录。程序不修改输入文件，只替换交付目录内的同名结果。"
 ];
 file = fopen(target, 'w', 'n', 'UTF-8');
 if file < 0
@@ -271,6 +265,25 @@ if ~all(ismember(required, tableValue.Properties.VariableNames))
 end
 end
 
+function prepareOutput(outputRoot)
+if ~isfolder(outputRoot)
+    mkdir(outputRoot);
+end
+cleanupOwnedArtifacts(outputRoot);
+end
+
+function cleanupOwnedArtifacts(outputRoot)
+owned = ["src","results","figures","README.md",".complete"];
+for index = 1:numel(owned)
+    target = fullfile(outputRoot, owned(index));
+    if isfolder(target)
+        rmdir(target, 's');
+    elseif isfile(target)
+        delete(target);
+    end
+end
+end
+
 function cleanupOnFailure(outputRoot, completionMarker)
 if isfile(completionMarker)
     delete(completionMarker);
@@ -278,7 +291,7 @@ if isfile(completionMarker)
 end
 if isfolder(outputRoot)
     try
-        rmdir(outputRoot, 's');
+        cleanupOwnedArtifacts(outputRoot);
     catch
     end
 end
