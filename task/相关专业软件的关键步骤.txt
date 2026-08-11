@@ -1,0 +1,7 @@
+1.在MATLAB R2024b中使用readtable读取两次阶次窗、alarm_limits.csv、candidate_speeds.csv和test_plan_rules.csv
+2.检查run_id与window_id联合键、方向阶次组合及限值表的一对一覆盖关系
+3.按run_id、sensor_axis和order_x分组计算峰值、峰值转速与超限窗数量
+4.根据minimum_consecutive_windows和merge_gap_rpm形成单次试验风险段
+5.使用repeat_overlap_rpm匹配A与B区间并按safety_margin_rpm生成发布边界
+6.结合candidate_speeds与test_plan_rules过滤候选点，生成驻留步骤、穿越风险ID和最低升速率
+7.使用writetable和exportgraphics导出三份CSV与三面板工程图，并写出README.md

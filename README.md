@@ -1,3 +1,7 @@
 # 隧道通风机两次升速试验的阶次风险复核
 
-本仓库用于生成Q2207的首版MATLAB Reference。输入材料均为自造数据，当前工作流在Windows Server2025上使用MATLAB R2024b生成完整交付物。
+本仓库只包含一道MATLAB任务。task目录保存最终四附件和题目正文，implementation目录保存MATLAB分析入口，qa目录保存结果核对程序。两次阶次窗、报警限值、候选转速和试验规则均为本仓库自造材料，不含个人信息、内部地址或生产凭据。
+
+Windows工作流使用Windows Server2025和官方MATLAB R2024b。核对程序在两个独立目录中各执行两次完整重建，逐文件比较Reference，并检查一项报警限值变化和一项重复业务键错误。
+
+工作流入口位于.github/workflows/windows-repro.yml。
