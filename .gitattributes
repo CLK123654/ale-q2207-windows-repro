@@ -1,0 +1,5 @@
+*.zip binary
+*.csv text eol=lf
+*.m text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
