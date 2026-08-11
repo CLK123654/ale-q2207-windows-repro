@@ -230,7 +230,7 @@ for index = 1:height(limits)
     grid on;
     xlabel('转速rpm');
     ylabel('幅值g');
-    title(limits.sensor_axis(index) + " " + string(limits.order_x(index)) + "x阶次");
+    title(limits.sensor_axis(index) + string(limits.order_x(index)) + "x阶次");
     legend('Location','best');
 end
 exportgraphics(figureHandle, target, 'Resolution', 120);
