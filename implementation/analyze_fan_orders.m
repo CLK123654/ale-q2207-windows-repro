@@ -221,11 +221,11 @@ for index = 1:height(limits)
         selected = sortrows(windows(rows,:), 'rpm_center');
         plot(selected.rpm_center, selected.amplitude_g, 'LineWidth', 1.5, 'DisplayName', "Run " + run);
     end
-    yline(limits.alarm_amplitude_g(index), '--', '报警限值', 'LineWidth', 1.2);
+    yline(limits.alarm_amplitude_g(index), '--', '报警限值', 'LineWidth', 1.2, 'HandleVisibility', 'off');
     related = risks(risks.sensor_axis == limits.sensor_axis(index) & risks.order_x == limits.order_x(index),:);
     for riskIndex = 1:height(related)
-        xline(related.protected_start_rpm(riskIndex), ':', related.risk_id(riskIndex));
-        xline(related.protected_end_rpm(riskIndex), ':');
+        xline(related.protected_start_rpm(riskIndex), ':', related.risk_id(riskIndex), 'HandleVisibility', 'off');
+        xline(related.protected_end_rpm(riskIndex), ':', 'HandleVisibility', 'off');
     end
     grid on;
     xlabel('转速rpm');
