@@ -154,10 +154,21 @@ if ~isequal(actualFiles, expectedFiles)
     error('ALE:FileSet', '交付文件集合与Reference不一致');
 end
 for index = 1:numel(expectedFiles)
-    left = readBytes(fullfile(actual, expectedFiles(index)));
-    right = readBytes(fullfile(expected, expectedFiles(index)));
-    if ~isequal(left, right)
-        error('ALE:FileContent', '交付文件与Reference不一致:%s', expectedFiles(index));
+    actualFile = fullfile(actual, expectedFiles(index));
+    expectedFile = fullfile(expected, expectedFiles(index));
+    [~,~,extension] = fileparts(expectedFiles(index));
+    if strcmpi(extension, '.png')
+        [leftImage,leftMap,leftAlpha] = imread(actualFile);
+        [rightImage,rightMap,rightAlpha] = imread(expectedFile);
+        if ~isequal(leftImage, rightImage) || ~isequal(leftMap, rightMap) || ~isequal(leftAlpha, rightAlpha)
+            error('ALE:ImageContent', '交付图像像素与Reference不一致:%s', expectedFiles(index));
+        end
+    else
+        left = readBytes(actualFile);
+        right = readBytes(expectedFile);
+        if ~isequal(left, right)
+            error('ALE:FileContent', '交付文件与Reference不一致:%s', expectedFiles(index));
+        end
     end
 end
 end
